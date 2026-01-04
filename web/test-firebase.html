@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Test - Kirim Data Manual</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+      font-size: 0.875rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1rem;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+    }
+    .status.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #10b981;
+    }
+    .status.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+    .presets {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .preset-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .preset-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .info {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Test Firebase - Kirim Data Manual</h1>
+    
+    <div class="presets">
+      <button type="button" class="preset-btn" onclick="setPreset('A')">🥛 Grade A</button>
+      <button type="button" class="preset-btn" onclick="setPreset('B')">🥛 Grade B</button>
+      <button type="button" class="preset-btn" onclick="setPreset('F')">⚠️ Grade F</button>
+    </div>
+
+    <form id="dataForm">
+      <div class="form-group">
+        <label>pH Value (6.0 - 7.5 = Normal)</label>
+        <input type="number" id="ph" value="6.8" step="0.1" min="0" max="14" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Gas MQ-135 (< 2500 = Normal)</label>
+        <input type="number" id="mq135" value="100" min="0" max="10000" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Warna Susu</label>
+        <select id="color" required>
+          <option value="Putih Sempurna">Putih Sempurna (Grade A)</option>
+          <option value="Putih Kekuningan" selected>Putih Kekuningan (Grade B)</option>
+          <option value="Berubah Warna/Gelap">Berubah Warna/Gelap (Rusak)</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>RGB Values (R,G,B)</label>
+        <input type="text" id="rgb" value="250,245,230" placeholder="255,255,255" required>
+      </div>
+      
+      <button type="submit" id="submitBtn">📤 Kirim Data ke Firebase</button>
+    </form>
+    
+    <div class="status" id="status"></div>
+    
+    <div class="info">
+      <strong>📌 Cara Pakai:</strong><br>
+      1. Pilih preset atau masukkan nilai manual<br>
+      2. Klik "Kirim Data ke Firebase"<br>
+      3. Buka dashboard: <a href="http://localhost:5173" target="_blank" style="color: #667eea;">http://localhost:5173</a><br>
+      4. Data akan langsung muncul secara real-time!
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, push, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAKTn5zBzy0w5iaiedXq150vK5eESW4dJc",
+      authDomain: "goat-milk-monitor.firebaseapp.com",
+      databaseURL: "https://goat-milk-monitor-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "goat-milk-monitor",
+      storageBucket: "goat-milk-monitor.firebasestorage.app",
+      messagingSenderId: "782450512071",
+      appId: "1:782450512071:web:02f757a206ac3cc3d6aee2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Presets
+    window.setPreset = function(grade) {
+      const presets = {
+        'A': { ph: 6.8, mq135: 50, color: 'Putih Sempurna', rgb: '255,255,250' },
+        'B': { ph: 6.5, mq135: 100, color: 'Putih Kekuningan', rgb: '250,245,230' },
+        'F': { ph: 5.0, mq135: 3000, color: 'Berubah Warna/Gelap', rgb: '200,180,150' }
+      };
+      const p = presets[grade];
+      document.getElementById('ph').value = p.ph;
+      document.getElementById('mq135').value = p.mq135;
+      document.getElementById('color').value = p.color;
+      document.getElementById('rgb').value = p.rgb;
+    };
+
+    // Form Submit
+    document.getElementById('dataForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const btn = document.getElementById('submitBtn');
+      const status = document.getElementById('status');
+      
+      btn.disabled = true;
+      btn.textContent = '⏳ Mengirim...';
+      
+      try {
+        const data = {
+          pH: parseFloat(document.getElementById('ph').value),
+          mq135: parseInt(document.getElementById('mq135').value),
+          color: document.getElementById('color').value,
+          rgb: document.getElementById('rgb').value,
+          timestamp: Date.now()
+        };
+        
+        const readingsRef = ref(database, 'readings');
+        await push(readingsRef, data);
+        
+        status.className = 'status success';
+        status.innerHTML = '✅ Data berhasil dikirim! Cek dashboard Anda.';
+        
+        console.log('Data sent:', data);
+      } catch (error) {
+        status.className = 'status error';
+        status.innerHTML = '❌ Error: ' + error.message;
+        console.error(error);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '📤 Kirim Data ke Firebase';
+      }
+    });
+
+    console.log('🔥 Firebase Test Tool Ready');
+  </script>
+</body>
+</html>
