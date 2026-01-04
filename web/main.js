@@ -221,6 +221,17 @@ function renderDashboard(data) {
           <span class="criteria-item__value">&lt; ${THRESHOLDS.BATAS_BAU}</span>
         </div>
       </div>
+
+      <!-- Last Update -->
+      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+          <span style="font-size: 1.25rem;">🕐</span>
+          <div style="text-align: center;">
+            <p style="font-size: 0.7rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Last Update</p>
+            <p style="font-size: 1rem; font-weight: 600; color: #667eea;" id="last-update">${new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'medium' })}</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
