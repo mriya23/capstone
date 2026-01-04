@@ -194,31 +194,31 @@ function renderDashboard(data) {
 
     <!-- Criteria Section -->
     <section class="criteria-section">
-      <h3 class="criteria-section__title">📋 Kriteria Penilaian</h3>
+      <h3 class="criteria-section__title">KRITERIA WARNA SUSU</h3>
       <div class="criteria-grid">
         <div class="criteria-item">
-          <span class="criteria-item__label">Grade A (Segar)</span>
-          <span class="criteria-item__value">Putih Sempurna</span>
+          <span class="criteria-item__label">Grade A (Segar):</span>
+          <span class="criteria-item__value">&lt; ${THRESHOLDS.WARNA_GRADE_A}</span>
         </div>
         <div class="criteria-item">
-          <span class="criteria-item__label">Grade B (Cukup)</span>
-          <span class="criteria-item__value">Putih Kekuningan</span>
+          <span class="criteria-item__label">Grade B (Cukup):</span>
+          <span class="criteria-item__value">${THRESHOLDS.WARNA_GRADE_A} - ${THRESHOLDS.WARNA_GRADE_B}</span>
         </div>
         <div class="criteria-item">
-          <span class="criteria-item__label">Grade C/F</span>
-          <span class="criteria-item__value">Berubah Warna</span>
+          <span class="criteria-item__label">Grade C (Rusak):</span>
+          <span class="criteria-item__value">&gt; ${THRESHOLDS.WARNA_GRADE_B}</span>
         </div>
+      </div>
+      
+      <h3 class="criteria-section__title" style="margin-top: 1.5rem;">PARAMETER LAIN</h3>
+      <div class="criteria-grid">
         <div class="criteria-item">
-          <span class="criteria-item__label">pH Normal</span>
+          <span class="criteria-item__label">pH Normal:</span>
           <span class="criteria-item__value">${THRESHOLDS.PH_MIN} - ${THRESHOLDS.PH_MAX}</span>
         </div>
         <div class="criteria-item">
-          <span class="criteria-item__label">Batas Gas</span>
+          <span class="criteria-item__label">Udara (Bau):</span>
           <span class="criteria-item__value">&lt; ${THRESHOLDS.BATAS_BAU}</span>
-        </div>
-        <div class="criteria-item">
-          <span class="criteria-item__label">Last Update</span>
-          <span class="criteria-item__value" id="last-update">${data.timestamp ? formatTime(data.timestamp) : 'Just now'}</span>
         </div>
       </div>
     </section>
