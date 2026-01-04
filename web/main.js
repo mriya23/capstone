@@ -236,8 +236,8 @@ function renderDashboard(data) {
 
     <!-- Footer -->
     <footer class="footer">
-      <p>🥛 Goat Milk Monitor &copy; 2026 | Powered by <a href="https://firebase.google.com" target="_blank" class="footer__link">Firebase</a></p>
-      <p style="margin-top: 0.5rem;">Real-time IoT Monitoring System</p>
+      <p>🥛 Goat Milk Monitor &copy; 2026</p>
+      <p style="margin-top: 0.5rem;">Develop by <span style="color: #667eea; font-weight: 600;">Kelompok G</span></p>
     </footer>
 
     <!-- Connection Status -->
@@ -296,7 +296,8 @@ function renderNoData() {
 
     <!-- Footer -->
     <footer class="footer">
-      <p>🥛 Goat Milk Monitor &copy; 2026 | Powered by <a href="https://firebase.google.com" target="_blank" class="footer__link">Firebase</a></p>
+      <p>🥛 Goat Milk Monitor &copy; 2026</p>
+      <p style="margin-top: 0.5rem;">Develop by <span style="color: #667eea; font-weight: 600;">Kelompok G</span></p>
     </footer>
 
     <!-- Connection Status -->
