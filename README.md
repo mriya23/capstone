@@ -137,7 +137,7 @@ Do not consume!
 
 ## 👥 Contributors
 
-- Your Name - Developer
+- Kelompk G - Developer
 
 ## 📄 License
 
@@ -145,4 +145,4 @@ MIT License - feel free to use and modify!
 
 ---
 
-Made with ❤️ for Capstone Project 2026
+Capstone Project 2026
